@@ -1,0 +1,38 @@
+module greycounter_tb_v;
+
+	// Inputs
+	reg clock;
+	reg reset;
+
+	// Outputs
+	wire [2:0] gray_out;
+
+	// Instantiate the Unit Under Test (UUT)
+	greycounter uut (
+		.clock(clock), 
+		.reset(reset), 
+		.gray_out(gray_out)
+	);
+	 always #5 clock = ~clock;
+	initial begin
+
+
+		// Wait 100 ns for global reset to finish
+	 clock = 0;
+    reset = 0;
+    
+    // Apply reset
+    #10 reset = 0;  // Apply active low reset
+    #10 reset = 1;  // De-assert reset
+    
+    // Monitor signals
+    $monitor("Time=%d, clock=%b, reset=%b, gray_out=%b", $time, clock, reset, gray_out);
+    
+    // Run simulation for 100 time units
+    #100;
+    
+    // Finish simulation
+    $stop;
+	end
+      
+endmodule
